@@ -1,0 +1,16 @@
+{
+  "name": "10-desafio-playlists",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.0",
+    "nodemon": "^3.1.5"
+  }
+}

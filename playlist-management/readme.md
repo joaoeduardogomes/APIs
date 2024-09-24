@@ -10,7 +10,7 @@ The goal was to creat a API that could manage playlists by creating a new playli
 
 ## Tecnologies
 
-**Back-end:** Node, Express
+**Back-end:** ![Static Badge](https://img.shields.io/badge/node-%23417E38?style=for-the-badge&logo=node&logoColor=black) ![Static Badge](https://img.shields.io/badge/Express-black?style=for-the-badge&logo=express&logoColor=white)
 
 ## Lessons learned & challenges
 

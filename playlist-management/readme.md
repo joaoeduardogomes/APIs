@@ -1,6 +1,6 @@
 
 
-# Playlists managament **🇺🇸**
+# Playlists management **🇺🇸**
 
 A project made for practicing the use of NodeJS and Express for API creation.
 

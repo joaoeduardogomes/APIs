@@ -1,41 +1,43 @@
 from flask import Flask, request, jsonify
 import sqlite3
 import handle_authors
+import handle_books
 
 
 def register_routes(app):
 
-    #! GET
+    #! AUTHORS ROUTES
+    #? GET
     @app.route("/authors", methods=["GET"])
     def get_authors():
         authors = handle_authors.get_authors()
         return jsonify(authors)
 
-    #! GET
+    #? GET
     @app.route("/authors/name/<string:name>", methods=["GET"])
     def get_author_by_name(name):
         author = handle_authors.get_author_by_name(name)
         return jsonify(author)
 
-    #! GET
+    #? GET
     @app.route("/authors/name", methods=["GET"])
     def list_authors_names():
         names = handle_authors.list_authors_names()
         return {"names": (names)}
 
-    #! GET
+    #? GET
     @app.route("/authors/country/<string:country>", methods=["GET"])
     def get_country_authors(country):
         authors = handle_authors.get_country_authors(country)
         return jsonify(authors)
 
-    #! GET
+    #? GET
     @app.route("/authors/country", methods=["GET"])
     def list_authors_countries():
         countries = handle_authors.list_authors_countries()
         return {"countries": (countries)}
 
-    #! POST
+    #? POST
     @app.route("/authors", methods=["POST"])
     def add_author():
         data = request.get_json()
@@ -48,7 +50,7 @@ def register_routes(app):
         except Exception as e:
             return jsonify({"error": f"Error: {e}"}), 400
 
-    #! GET
+    #? GET
     @app.route("/authors/<int:author_id>", methods=["GET"])
     def get_author_by_id(author_id):
         author = handle_authors.get_author_by_id(author_id)
@@ -58,7 +60,7 @@ def register_routes(app):
         author = handle_authors.get_author_by_id(author_id)
         return jsonify(author)
 
-    #! PUT
+    #? PUT
     @app.route("/authors/<int:author_id>", methods=["PUT"])
     def update_author(author_id):
         data = request.get_json()
@@ -77,7 +79,7 @@ def register_routes(app):
         except Exception as e:
             return jsonify({"error": f"Error: {str(e)}"}), 400
 
-    #! DELETE
+    #? DELETE
     @app.route("/authors/<int:author_id>", methods=["DELETE"])
     def delete_author(author_id):
         author = handle_authors.get_author_by_id(author_id)
@@ -89,6 +91,42 @@ def register_routes(app):
             return jsonify({"message": f"Author '{author['name']}' deleted!"})
         except Exception as e:
             return jsonify({"error": f"Error: {str(e)}"}), 500
+        
+
+    
+    #! BOOKS ROUTES
+    #? GET
+    @app.route("/books", methods=["GET"])
+    def get_books():
+        books = handle_books.get_books()
+        return jsonify(books)
+    
+    #? GET
+    @app.route("/books/<int:book_id>", methods=["GET"])
+    def get_book_by_id(book_id):
+        book = handle_books.get_book_by_id(book_id)
+        return jsonify(book)
+    
+    #? GET
+    @app.route("/books/<string:title>", methods=["GET"])
+    def get_book_by_title(title):
+        book = handle_books.get_book_by_title(title)
+        return jsonify(book)
+
+    #? POST
+    @app.route("/books", methods=["POST"])
+    def add_book():
+        data = request.get_json()
+        title = data["title"]
+        genre = data["genre"]
+        isbn = data["isbn"]
+        released_year = data["released_year"]
+
+        try:
+            handle_books.add_book(title, genre, isbn, released_year)
+            return jsonify({"message": f"Book: {title} registered!"}), 201
+        except Exception as e:
+            return jsonify({"error": f"Error: {e}"}), 400
 
     """  @app.route("/")
     def index():

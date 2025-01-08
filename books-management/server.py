@@ -24,7 +24,7 @@ def sync_db():
                     title TEXT NOT NULL,
                     genre TEXT NOT NULL,
                     isbn TEXT UNIQUE,
-                    released_year INTEGER NOT NULL CHECK(released_year BETWEEN 1500 AND strftime('%Y', 'now'))
+                    released_year INTEGER NOT NULL CHECK(released_year >= 1500)
                 )
             """)
             cursor.execute("""

@@ -76,10 +76,28 @@ def register_author(name, country):
     execute_query(query, params=(name, country))
 
 #! PUT
-def update_author(author_id, name, country) -> dict:
-    query = "UPDATE authors SET name = ?, country = ? WHERE id = ?"
-    execute_query(query=query, params=(name, country, author_id))
+def update_author(author_id, name=None, country=None) -> dict:
+    set_clauses = []
+    params = []
+
+    if name:
+        set_clauses.append("name = ?")
+        params.append(name)
+    
+    if country:
+        set_clauses.append("country = ?")
+        params.append(country)
+
+    if not set_clauses:
+        return {"error": "No fields provided to update"}
+
+    query = f"UPDATE authors SET {', '.join(set_clauses)} WHERE id = ?"
+    params.append(author_id)
+
+    execute_query(query, params)
+
     return get_author_by_id(author_id)
+
 
 #! DELETE
 def delete_author(author_id) -> dict:

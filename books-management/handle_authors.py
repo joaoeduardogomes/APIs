@@ -45,3 +45,8 @@ def update_author(author_id, firstname, lastname) -> dict:
     query = "UPDATE authors SET firstname = ?, lastname = ? WHERE id = ?"
     execute_query(query=query, params=(firstname, lastname, author_id))
     return get_author_by_id(author_id)
+
+#! DELETE
+def delete_author(author_id) -> dict:
+    query = "DELETE FROM authors WHERE id = ?"
+    execute_query(query=query, params=(author_id,))

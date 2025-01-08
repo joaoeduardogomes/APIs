@@ -42,6 +42,19 @@ def register_routes(app):
         except Exception as e:
             return jsonify({"error": f"Error: {e}"}), 400
 
+    #! DELETE
+    @app.route("/authors/<int:author_id>", methods=["DELETE"])
+    def delete_author(author_id):
+        author = handle_authors.get_author_by_id(author_id)
+        if not author:
+            return jsonify({"error": f"Error: author not found"}), 400
+        
+        try:
+            handle_authors.delete_author(author_id)
+            return jsonify({"message": f"Author '{author['name']}' deleted!"})  
+        except Exception as e:
+            return jsonify({"error": f"Error: {str(e)}"}), 500
+
     """  @app.route("/")
     def index():
         with sqlite3.connect("management.db") as conn:

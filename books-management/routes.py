@@ -9,6 +9,12 @@ def register_routes(app):
     def get_authors():
         authors = handle_authors.get_authors()
         return jsonify(authors)
+    
+    #! GET
+    @app.route("/authors/name/<string:name>", methods=["GET"])
+    def get_author_by_name(name):
+        author = handle_authors.get_author_by_name(name)
+        return jsonify(author)
 
     #! POST
     @app.route("/authors", methods=["POST"])

@@ -64,6 +64,27 @@ def get_country_authors(country) -> list:
         return [dict(zip(columns, row)) for row in rows]
     return []
 
+#! GET
+def list_authors_names() -> list:
+    query = """
+        SELECT name 
+        FROM authors 
+    """
+    rows = execute_query(query, fetch=True)
+    
+    if rows is not None:
+        return [row[0] for row in rows]
+    return []
+
+#! GET
+def list_authors_countries() -> list:
+    query = "SELECT DISTINCT country FROM authors ORDER BY country ASC"
+    rows = execute_query(query, fetch=True)
+    
+    if rows is not None:
+        return [row[0] for row in rows]
+    return []
+
 #! POST
 def register_author(name, country):
     query = "INSERT INTO authors (name, country) VALUES (?, ?)"

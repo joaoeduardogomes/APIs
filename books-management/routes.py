@@ -17,10 +17,22 @@ def register_routes(app):
         return jsonify(author)
     
     #! GET
+    @app.route("/authors/name", methods=["GET"])
+    def list_authors_names():
+        names = handle_authors.list_authors_names()
+        return {"names": (names)}
+    
+    #! GET
     @app.route("/authors/country/<string:country>", methods=["GET"])
     def get_country_authors(country):
         authors = handle_authors.get_country_authors(country)
         return jsonify(authors)
+    
+    #! GET
+    @app.route("/authors/country", methods=["GET"])
+    def list_authors_countries():
+        countries = handle_authors.list_authors_countries()
+        return {"countries": (countries)}
 
     #! POST
     @app.route("/authors", methods=["POST"])

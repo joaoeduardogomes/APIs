@@ -15,6 +15,12 @@ def register_routes(app):
     def get_author_by_name(name):
         author = handle_authors.get_author_by_name(name)
         return jsonify(author)
+    
+    #! GET
+    @app.route("/authors/country/<string:country>", methods=["GET"])
+    def get_country_authors(country):
+        authors = handle_authors.get_country_authors(country)
+        return jsonify(authors)
 
     #! POST
     @app.route("/authors", methods=["POST"])

@@ -54,6 +54,16 @@ def get_author_by_name(name) -> dict:
         return dict(zip(columns, row[0]))
     return {}
 
+#! GET
+def get_country_authors(country) -> list:
+    query = "SELECT id, name, country FROM authors WHERE LOWER(country) = ?"
+    rows = execute_query(query, params=(country.lower(),), fetch=True)
+    
+    if rows is not None:
+        columns = ["id", "name", "country"]
+        return [dict(zip(columns, row)) for row in rows]
+    return []
+
 #! POST
 def register_author(name, country):
     query = "INSERT INTO authors (name, country) VALUES (?, ?)"

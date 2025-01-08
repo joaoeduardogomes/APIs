@@ -119,7 +119,7 @@ def register_routes(app):
         data = request.get_json()
         title = data["title"]
         genre = data["genre"]
-        isbn = data["isbn"]
+        isbn = data.get("isbn", None)
         released_year = data["released_year"]
 
         try:
@@ -148,6 +148,19 @@ def register_routes(app):
             return jsonify(updated_book)
         except Exception as e:
             return jsonify({"error": f"Error: {str(e)}"}), 400
+        
+    #? DELETE
+    @app.route("/books/<int:book_id>", methods=["DELETE"])
+    def delete_books(book_id):
+        book = handle_books.get_book_by_id(book_id)
+        if not book:
+            return jsonify({"error": f"Error: book not found"}), 400
+
+        try:
+            handle_books.delete_book(book_id)
+            return jsonify({"message": f"Book '{book['title']}' deleted!"})
+        except Exception as e:
+            return jsonify({"error": f"Error: {str(e)}"}), 500
 
     """  @app.route("/")
     def index():

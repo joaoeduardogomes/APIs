@@ -28,13 +28,15 @@ def get_book_by_title(title):
         return [dict(zip(columns, row)) for row in rows]
     return {}
 
-def add_book(title, genre, isbn, released_year):
+def add_book(title, genre, isbn=None, released_year=None):
     current_year = datetime.now().year
     if not (1500 <= released_year <= current_year):
         raise ValueError("Invalid released year. It must be between 1500 and the current year.")
+    
+    isbn_value = isbn if isbn else None
 
     query = "INSERT INTO books (title, genre, isbn, released_year) VALUES (?, ?, ?, ?)"
-    execute_query(query, params=(title, genre, isbn, released_year))
+    execute_query(query, params=(title, genre, isbn_value, released_year))
 
 def update_book(book_id, title=None, genre=None, isbn=None, released_year=None):
     set_clauses = []
@@ -69,3 +71,7 @@ def update_book(book_id, title=None, genre=None, isbn=None, released_year=None):
     execute_query(query, params)
 
     return get_book_by_id(book_id)
+
+def delete_book(book_id):
+    query = "DELETE FROM books WHERE id = ?"
+    execute_query(query, params=(book_id,))

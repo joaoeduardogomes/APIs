@@ -17,33 +17,42 @@ def execute_query(query, params=(), fetch=False) -> list:
 
 #! GET
 def get_authors():
-    query = "SELECT id, firstname || ' ' || lastname AS name FROM authors"
+    query = """
+        SELECT 
+            id, 
+            name, 
+            country
+        FROM 
+            authors
+        ORDER BY 
+            SUBSTR(name, LENGTH(name) - INSTR(REPLACE(name, ' ', '_') || ' ', ' ') + 2);
+    """
     rows = execute_query(query, fetch=True)
     
     if rows is not None:
-        columns = ["id", "name"]
+        columns = ["id", "name", "country"]
         return [dict(zip(columns, row)) for row in rows]
     return []
 
 #! GET
 def get_author_by_id(author_id) -> dict:
-    query = "SELECT id, firstname || ' ' || lastname AS name FROM authors WHERE id = ?"
+    query = "SELECT id, name, country FROM authors WHERE id = ?"
     row = execute_query(query, params=(author_id,), fetch=True)
     
     if row:
-        columns = ["id", "name"]
+        columns = ["id", "name", "country"]
         return dict(zip(columns, row[0]))
     return {}
 
 #! POST
-def register_author(firstname, lastname):
-    query = "INSERT INTO authors (firstname, lastname) VALUES (?, ?)"
-    execute_query(query, params=(firstname, lastname))
+def register_author(name, country):
+    query = "INSERT INTO authors (name, country) VALUES (?, ?)"
+    execute_query(query, params=(name, country))
 
 #! PUT
-def update_author(author_id, firstname, lastname) -> dict:
-    query = "UPDATE authors SET firstname = ?, lastname = ? WHERE id = ?"
-    execute_query(query=query, params=(firstname, lastname, author_id))
+def update_author(author_id, name, country) -> dict:
+    query = "UPDATE authors SET name = ?, country = ? WHERE id = ?"
+    execute_query(query=query, params=(name, country, author_id))
     return get_author_by_id(author_id)
 
 #! DELETE

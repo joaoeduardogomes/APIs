@@ -14,20 +14,20 @@ def sync_db():
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS authors (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    firstname TEXT NOT NULL,
-                    lastname TEXT NOT NULL
+                    name TEXT NOT NULL,
+                    country TEXT
                 )
             """)
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS books (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL,
-                    author_id INTEGER,
-                    FOREIGN KEY (author_id) REFERENCES authors (id) ON DELETE CASCADE
+                    genre TEXT NOT NULL,
+                    released_year INTEGER NOT NULL CHECK(released_year BETWEEN 1500 AND strftime('%Y', 'now'))
                 )
             """)
             cursor.execute("""
-                CREATE TABLE IF NOT EXISTS book_authors (
+                CREATE TABLE IF NOT EXISTS books_authors (
                     book_id INTEGER NOT NULL,
                     author_id INTEGER NOT NULL,
                     PRIMARY KEY (book_id, author_id),

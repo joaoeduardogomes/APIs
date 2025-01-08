@@ -14,12 +14,12 @@ def register_routes(app):
     @app.route("/authors", methods=["POST"])
     def add_author():
         data = request.get_json()
-        firstname = data["firstname"]
-        lastname = data["lastname"]
+        name = data["name"]
+        country = data["country"]
         
         try:
-            handle_authors.register_author(firstname, lastname)
-            return jsonify({"message": f"Author: {firstname} {lastname} registered!"}), 201
+            handle_authors.register_author(name, country)
+            return jsonify({"message": f"Author: {name} registered!"}), 201
         except Exception as e:
             return jsonify({"error": f"Error: {e}"}), 400
 
@@ -27,17 +27,25 @@ def register_routes(app):
     @app.route("/authors/<int:author_id>", methods=["GET"])
     def get_author_by_id(author_id):
         author = handle_authors.get_author_by_id(author_id)
+        if not author:
+            return jsonify({"error": f"Error: author not found"}), 400
+        
+        author = handle_authors.get_author_by_id(author_id)
         return jsonify(author)
     
     #! PUT
     @app.route("/authors/<int:author_id>", methods=["PUT"])
     def update_author(author_id):
+        author = handle_authors.get_author_by_id(author_id)
+        if not author:
+            return jsonify({"error": f"Error: author not found"}), 400
+        
         data = request.get_json()
-        firstname = data["firstname"]
-        lastname = data["lastname"]
+        name = data["name"]
+        country = data["country"]
         
         try:
-            updated_author = handle_authors.update_author(author_id, firstname, lastname)
+            updated_author = handle_authors.update_author(author_id, name, country)
             return jsonify(updated_author)
         except Exception as e:
             return jsonify({"error": f"Error: {e}"}), 400

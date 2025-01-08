@@ -127,6 +127,27 @@ def register_routes(app):
             return jsonify({"message": f"Book: {title} registered!"}), 201
         except Exception as e:
             return jsonify({"error": f"Error: {e}"}), 400
+        
+    #? PUT
+    @app.route("/books/<int:book_id>", methods=["PUT"])
+    def update_book(book_id):
+        data = request.get_json()
+
+        if not data:
+            return jsonify({"error": "No data provided in the request body"}), 400
+
+        title = data.get("title")
+        genre = data.get("genre")
+        isbn = data.get("isbn")
+        released_year = data.get("released_year")
+
+        try:
+            updated_book = handle_books.update_book(book_id, title, genre, isbn, released_year)
+            if "error" in updated_book:
+                return jsonify(updated_book), 400
+            return jsonify(updated_book)
+        except Exception as e:
+            return jsonify({"error": f"Error: {str(e)}"}), 400
 
     """  @app.route("/")
     def index():

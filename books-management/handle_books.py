@@ -35,3 +35,37 @@ def add_book(title, genre, isbn, released_year):
 
     query = "INSERT INTO books (title, genre, isbn, released_year) VALUES (?, ?, ?, ?)"
     execute_query(query, params=(title, genre, isbn, released_year))
+
+def update_book(book_id, title=None, genre=None, isbn=None, released_year=None):
+    set_clauses = []
+    params = []
+
+    if title:
+        set_clauses.append("title = ?")
+        params.append(title)
+
+    if genre:
+        set_clauses.append("genre = ?")
+        params.append(genre)
+
+    if isbn:
+        set_clauses.append("isbn = ?")
+        params.append(isbn)
+
+    if released_year:
+        current_year = datetime.now().year
+        if not (1500 <= released_year <= current_year):
+            raise ValueError("Invalid released year. It must be between 1500 and the current year.")
+        
+        set_clauses.append("released_year = ?")
+        params.append(released_year)
+
+    if not set_clauses:
+        return {"error": "No fields provided to update"}
+
+    query = f"UPDATE books SET {', '.join(set_clauses)} WHERE id = ?"
+    params.append(book_id)
+
+    execute_query(query, params)
+
+    return get_book_by_id(book_id)

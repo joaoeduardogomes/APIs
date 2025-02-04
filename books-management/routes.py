@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import sqlite3
 import handle_authors
 import handle_books
+import handle_books_authors
 
 
 def register_routes(app):
@@ -159,6 +160,46 @@ def register_routes(app):
         try:
             handle_books.delete_book(book_id)
             return jsonify({"message": f"Book '{book['title']}' deleted!"})
+        except Exception as e:
+            return jsonify({"error": f"Error: {str(e)}"}), 500
+        
+
+    #! DATA RELATION ROUTES
+    #? GET
+    @app.route("/data", methods=["GET"])
+    def index():
+        data = handle_books_authors.get_data()
+        return jsonify(data)
+    
+    @app.route("/data/book/<int:book_id>", methods=["GET"])
+    def get_data_by_book_id(book_id):
+        data = handle_books_authors.get_data_by_book_id(book_id)
+        return jsonify(data)
+    
+    @app.route("/data/author/<int:author_id>", methods=["GET"])
+    def get_data_by_author_id(author_id):
+        data = handle_books_authors.get_data_by_author_id(author_id)
+        return jsonify(data)
+
+    #? POST
+    @app.route("/data", methods=["POST"])
+    def add_data():
+        data = request.get_json()
+        book_id = data["book_id"]
+        author_id = data["author_id"]
+
+        try:
+            handle_books_authors.add_data(book_id, author_id)
+            return jsonify({"message": f"Data added!"}), 201
+        except Exception as e:
+            return jsonify({"error": f"Error: {e}"}), 400
+        
+    #? DELETE
+    @app.route("/data/<int:book_id>/<int:author_id>", methods=["DELETE"])
+    def delete_data(book_id, author_id):
+        try:
+            handle_books_authors.delete_data(book_id, author_id)
+            return jsonify({"message": "Data deleted successfully!"}), 200
         except Exception as e:
             return jsonify({"error": f"Error: {str(e)}"}), 500
 

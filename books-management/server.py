@@ -10,6 +10,7 @@ routes.register_routes(app)
 def sync_db():
         with sqlite3.connect("management.db") as conn:
             cursor = conn.cursor()
+            cursor.execute("PRAGMA foreign_keys = ON;")
 
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS authors (

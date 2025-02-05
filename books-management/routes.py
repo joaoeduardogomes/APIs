@@ -109,7 +109,7 @@ def register_routes(app):
         return jsonify(book)
     
     #? GET
-    @app.route("/books/<string:title>", methods=["GET"])
+    @app.route("/books/title/<string:title>", methods=["GET"])
     def get_book_by_title(title):
         book = handle_books.get_book_by_title(title)
         return jsonify(book)

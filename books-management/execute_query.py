@@ -12,5 +12,4 @@ def execute_query(query, params=(), fetch=False) -> list:
             else:
                 conn.commit()
     except sqlite3.Error as e:
-        print(f"Database error: {e}")
-        return None if not fetch else []
+        raise RuntimeError(f"Database error: {e}")

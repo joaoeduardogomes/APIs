@@ -72,6 +72,9 @@ def list_authors_countries() -> list:
 
 #! POST
 def register_author(name, country):
+    if not name or not country:
+        raise ValueError("Both name and country are required.")
+
     query = "INSERT INTO authors (name, country) VALUES (?, ?)"
     execute_query(query, params=(name, country))
 

@@ -14,9 +14,9 @@ A simple RESTful API for managing books and authors using Flask and SQLite.
 
 ## Technologies Used
 
-- Python 3
+- ![Python](https://img.shields.io/badge/PYTHON-%20?style=for-the-badge&logo=python&logoColor=white&color=%23356F9F)
 
-- Flask
+- ![Static Badge](https://img.shields.io/badge/flask-%232A2123?style=for-the-badge&logo=flask)
 
 - SQLite
 

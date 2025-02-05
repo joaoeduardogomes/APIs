@@ -37,6 +37,15 @@ def register_routes(app):
     def list_authors_countries():
         countries = handle_authors.list_authors_countries()
         return {"countries": (countries)}
+    
+    #? GET
+    @app.route("/authors/<int:author_id>", methods=["GET"])
+    def get_author_by_id(author_id):
+        author = handle_authors.get_author_by_id(author_id)
+        if not author:
+            return jsonify({"error": f"Error: author not found"}), 400
+
+        return jsonify(author)
 
     #? POST
     @app.route("/authors", methods=["POST"])
@@ -51,15 +60,6 @@ def register_routes(app):
         except Exception as e:
             return jsonify({"error": f"Error: {e}"}), 400
 
-    #? GET
-    @app.route("/authors/<int:author_id>", methods=["GET"])
-    def get_author_by_id(author_id):
-        author = handle_authors.get_author_by_id(author_id)
-        if not author:
-            return jsonify({"error": f"Error: author not found"}), 400
-
-        author = handle_authors.get_author_by_id(author_id)
-        return jsonify(author)
 
     #? PUT
     @app.route("/authors/<int:author_id>", methods=["PUT"])
